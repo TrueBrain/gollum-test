@@ -1,29 +1,24 @@
 import wikitextparser
 
+LIST_TYPES = {
+    ";": ("dl", "dt"),
+    ":": ("dl", "dd"),
+    "*": ("ul", "li"),
+    "#": ("ol", "li"),
+}
+
 
 def get_list_item_tag(list_type):
-    if list_type == ";":
-        list_tag = "dl"
-        item_tag = "dt"
-    elif list_type == ":":
-        list_tag = "dl"
-        item_tag = "dd"
-    elif list_type == "*":
-        list_tag = "ul"
-        item_tag = "li"
-    elif list_type == "#":
-        list_tag = "ol"
-        item_tag = "li"
-    else:
+    if list_type not in LIST_TYPES:
         raise NotImplementedError(f"List type {list_type} not yet implemented")
 
-    return list_tag, item_tag
+    return LIST_TYPES[list_type]
 
 
 def process_list(list: wikitextparser.WikiList):
     # We skipped a level; add the missing level (wikitextparser will reload
     # the node for us).
-    if list.items[0] and list.items[0][0] in ";:*#":
+    if list.items[0] and list.items[0][0] in LIST_TYPES:
         list.string = f"{list.fullitems[0][list.level - 1] * list.level} \n{list.string}"
 
     current_list_tag = None
@@ -43,7 +38,7 @@ def process_list(list: wikitextparser.WikiList):
         if (
             i > 0
             and list.level > 1
-            and (len(list.fullitems[i]) < 2 or list.fullitems[i][list.level - 1] not in ";:*#")
+            and (len(list.fullitems[i]) < 2 or list.fullitems[i][list.level - 1] not in LIST_TYPES)
             and list.fullitems[i - 1][list.level - 1] == ";"
             and list.fullitems[i][0] == ":"
         ):
