@@ -49,7 +49,7 @@ def load_page(category, language, page):
     return wtp.string
 
 
-def render_all(skip_till_page):
+def render_all(language, skip_till_page):
     import glob
 
     def iterate(folder):
@@ -69,7 +69,7 @@ def render_all(skip_till_page):
     def load_all(category, language):
         iterate(f"data/{category}/{language}")
 
-    load_all("Main", "en")
+    load_all("Main", language)
 
 
 routes = web.RouteTableDef()
@@ -129,7 +129,7 @@ def run_server():
 @click.argument("page", required=False)
 def main(category, language, page, check_all, server):
     if check_all:
-        render_all(page)
+        render_all(language, page)
         return
 
     if server:
