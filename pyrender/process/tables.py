@@ -8,9 +8,12 @@ def process_tables(wikitext: wikitextparser.WikiText):
 
         table_style = ""
         table_extra = ""
-        for attr in table.attrs:
+        for attr, value in table.attrs.items():
             if attr == "style":
-                style = html.escape(table.attrs["style"], quote=False).replace('"', "'").strip()
+                style = html.escape(value, quote=False).replace('"', "'").strip()
+                if not style:
+                    raise RuntimeError(f"Table attribute {attr} has an empty value, which was not expected")
+
                 if style[-1] != ";":
                     style += ";"
                 table_style += f"{style} "
@@ -26,7 +29,10 @@ def process_tables(wikitext: wikitextparser.WikiText):
                 "rules",
                 "width",
             ):
-                table_extra += f' {attr}="{html.escape(table.attrs[attr]).strip()}"'
+                value = html.escape(value).strip()
+                if not value:
+                    raise RuntimeError(f"Table attribute {attr} has an empty value, which was not expected")
+                table_extra += f' {attr}="{value}"'
             else:
                 raise NotImplementedError(f"Table attribute {attr} not yet implemented")
 
@@ -53,21 +59,27 @@ def process_tables(wikitext: wikitextparser.WikiText):
                 cell_style = ""
                 cell_extra = ""
 
-                for attr in cell.attrs:
+                for attr, value in cell.attrs.items():
                     if attr == "colspan":
-                        cell_extra += f' colspan="{cell.attrs["colspan"]}"'
-                        skip_cells = int(cell.attrs["colspan"]) - 1
+                        cell_extra += f' colspan="{value}"'
+                        skip_cells = int(value) - 1
                     elif attr == "rowspan":
-                        cell_extra += f' rowspan="{cell.attrs["rowspan"]}"'
+                        cell_extra += f' rowspan="{value}"'
                         # TODO -- What to skip?
-                        # skip_cells = int(cell.attrs["colspan"]) - 1
+                        # skip_cells = int(value) - 1
                     elif attr == "style":
-                        style = html.escape(cell.attrs["style"], quote=False).replace('"', "'").strip()
+                        style = html.escape(value, quote=False).replace('"', "'").strip()
+                        if not style:
+                            raise RuntimeError(f"Cell attribute {attr} has an empty value, which was not expected")
+
                         if style[-1] != ";":
                             style += ";"
                         cell_style += f"{style} "
                     elif attr in ("align", "bgcolor", "class", "height", "scope", "valign", "width"):
-                        cell_extra += f' {attr}="{html.escape(cell.attrs[attr]).strip()}"'
+                        value = html.escape(value).strip()
+                        if not value:
+                            raise RuntimeError(f"Cell attribute {attr} has an empty value, which was not expected")
+                        cell_extra += f' {attr}="{value}"'
                     elif attr in ("nowrap",):
                         cell_extra += f" {attr}"
                     else:
