@@ -15,6 +15,8 @@ def process_wikilinks(wikitext: wikitextparser.WikiText, page: str):
             or wikilink.title.startswith("Main/en/IA:")
             or wikilink.title.startswith("Main/en/SI:")
             or wikilink.title.startswith("Main/pl/SI:")
+            or wikilink.title.startswith("Main/es/IA:")
+            or wikilink.title.startswith("Main/fi/AI:")
             or wikilink.title
             in (
                 "Main/en/Road Construction:Old",
@@ -32,7 +34,7 @@ def process_wikilinks(wikitext: wikitextparser.WikiText, page: str):
             process_wikilink_file(wikilink, page)
         elif wikilink.title.startswith("Translation:"):
             process_wikilink_translation(wikilink)
-        elif wikilink.title.startswith("Category:"):
+        elif wikilink.title.startswith("Category:") or wikilink.title.startswith("Main/en/Kategorie:"):
             # TODO -- Implement
             wikilink.string = ""
         elif wikilink.title.startswith("Media:"):
@@ -53,7 +55,7 @@ def process_wikilinks(wikitext: wikitextparser.WikiText, page: str):
         elif wikilink.title == "Main/en/Image:No_image.png":
             # Here something went a bit wrong, comes from "Finished 32bpp Graphics ExtraZoom"
             wikilink.string = ""
-        elif wikilink.title.startswith("Main/en/Image:") or wikilink.title.startswith("Wikipedia:"):
+        elif wikilink.title.startswith("Main/en/Image:") or wikilink.title.startswith("Wikipedia:") or wikilink.title.startswith("Image:"):
             # TODO -- Wrongly converted link
             wikilink.string = ""
         elif wikilink.title in (

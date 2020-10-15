@@ -28,7 +28,17 @@ def process_parser_functions(wikitext: wikitextparser.WikiText, page: str):
 
         if name in PARSER_FUNCTIONS:
             PARSER_FUNCTIONS[name](parser_function, page)
-        elif name in ("fullurl", "localurl", "ucfirst", "lc", "talkpagename", "server", "currentyear", "displaytitle"):
+        elif name in (
+            "currentyear",
+            "displaytitle",
+            "fullpagename",
+            "fullurl",
+            "lc",
+            "localurl",
+            "server",
+            "talkpagename",
+            "ucfirst",
+        ):
             # TODO -- Implement this
             parser_function.string = ""
         else:

@@ -1,5 +1,7 @@
 import wikitextparser
 
+from .sections import VALID_TAGS
+
 
 def process_tags(wikitext: wikitextparser.WikiText):
     for tag in reversed(wikitext.get_tags()):
@@ -10,25 +12,7 @@ def process_tags(wikitext: wikitextparser.WikiText):
         elif tag.name == "nowiki":
             # TODO -- Implement this
             pass
-        elif tag.name in (
-            "b",
-            "big",
-            "br",
-            "center",
-            "code",
-            "div",
-            "font",
-            "p",
-            "pre",
-            "small",
-            "span",
-            "strong",
-            "sub",
-            "table",
-            "td",
-            "th",
-            "tr",
-        ):
+        elif tag.name in VALID_TAGS:
             # Valid HTML code, so leave it unchanged
             pass
         elif tag.name == "gallery":
