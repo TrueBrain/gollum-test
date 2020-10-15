@@ -82,20 +82,6 @@ class ErrorOnlyAccessLogger(AccessLogger):
             super().log(request, response, time)
 
 
-@routes.get("/uploads/{file:.*}")
-async def uploads_handler(request):
-    file = request.match_info["file"]
-
-    with open(f"data/uploads/{file}", "rb") as fp:
-        return web.Response(body=fp.read())
-
-
-@routes.get("/gollum.css")
-async def css_handler(request):
-    with open("data/gollum.css", "rb") as fp:
-        return web.Response(body=fp.read())
-
-
 @routes.get("/{category}/{language}/{page:.*}")
 async def main_handler(request):
     category = request.match_info["category"]
@@ -114,6 +100,8 @@ async def fallback(request):
 
 def run_server():
     webapp = web.Application()
+    webapp.router.add_static("/uploads", "data/uploads/")
+    webapp.router.add_static("/css", "data/css/")
     webapp.add_routes(routes)
 
     web.run_app(webapp, host="127.0.0.1", port=8000, access_log_class=ErrorOnlyAccessLogger)

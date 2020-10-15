@@ -1,7 +1,7 @@
 def render_html(category, language, page, body):
     content = "<html><head>\n"
     content += '<meta http-equiv="Content-type" content="text/html;charset=utf-8">\n'
-    content += '<link rel="stylesheet" type="text/css" href="/gollum.css" media="all">\n'
+    content += '<link rel="stylesheet" type="text/css" href="/css/gollum.css" media="all">\n'
     content += f"<title>OpenTTD - {page}</title>"
     content += (
         '</head><body class="webkit">\n<div class="container-lg clearfix">\n<div id="wiki-wrapper" class="page">\n'
