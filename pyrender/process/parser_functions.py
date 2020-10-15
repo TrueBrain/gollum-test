@@ -5,9 +5,9 @@ from .parser_function import (
     if_,
     ifeq,
     ifexpr,
-    switch,
-    pagename,
     namespace,
+    pagename,
+    switch,
 )
 
 
@@ -17,9 +17,8 @@ PARSER_FUNCTIONS = {
     "#ifeq": ifeq.process_pf_ifeq,
     "#ifexpr": ifexpr.process_pf_ifexpr,
     "#switch": switch.process_pf_switch,
-
-    "pagename": pagename.process_pf_pagename,
     "namespace": namespace.process_pf_namespace,
+    "pagename": pagename.process_pf_pagename,
 }
 
 
